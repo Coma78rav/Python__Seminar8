@@ -96,19 +96,47 @@ def replace_file(file_name, num):
             el = [el["Имя"], el["Фамилия"], el["Телефон"]]
             write_file(file_name, el)
     
-    def delete_file(file_name, num):
-        res = read_file(file_name)
-        with open(file_name, "w", encoding="utf-8", newline="") as data:
-            f_writer = DictWriter(data,fieldnames=["Имя", "Фамилия", "Телефон"])
-            f_writer.writeheader()
-            obj = []
-            for el in res:
-                if el["Телефон"] != str(num):
-                    obj.append(el)
-            f_writer.writerows(obj)
+def delete_file(file_name, num):
+    res = read_file(file_name)
+    with open(file_name, "w", encoding="utf-8", newline="") as data:
+        f_writer = DictWriter(data,fieldnames=["Имя", "Фамилия", "Телефон"])
+        f_writer.writeheader()
+        obj = []
+        for el in res:
+            if el["Телефон"] != str(num):
+                obj.append(el)
+        f_writer.writerows(obj)
             
     
-    
+def change_file(file_name, num):
+    res = read_file(file_name)
+    with open(file_name, "w", encoding="utf-8", newline="") as data:
+        f_writer = DictWriter(data,fieldnames=["Имя", "Фамилия", "Телефон"])
+        f_writer.writeheader()
+        obj = []
+        for el in res:
+            if el["Телефон"] != str(num):
+                is_valid_first_name = False
+                is_valid_last_name = False
+                while not is_valid_first_name or not is_valid_last_name:
+                    try:                        
+                        first_name = input("Введите имя: ")
+                        if len(file_name) < 2:
+                            raise NameError("Неверное имя")
+                        last_name = input("Введите фамилию: ")
+                        if len(file_name) < 2:
+                            raise NameError("Неверная фамилия")
+                        else:
+                            is_valid_first_name = True
+                            is_valid_last_name = True
+                    except NameError as err:
+                        print(err)
+                        continue
+                    
+                el["Имя"] = first_name
+                el["Фамилия"] = last_name
+            obj.append(el)
+        f_writer.writerows(obj)
     
 file_name = 'phone.csv'
 

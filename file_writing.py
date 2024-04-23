@@ -44,6 +44,7 @@ def get_info():
             print(err)
             continue
 
+
     is_valid_phone = False
     while not is_valid_phone:
         try:
@@ -63,7 +64,7 @@ def get_info():
 
 
 def create_file(file_name):
-        with open(file_name, "w", encoding='utf-8') as data:
+    with open(file_name, "w", encoding='utf-8') as data:
         f_writer = DictWriter(data, fieldnames=['Имя', 'Фамилия', 'Телефон'])
         f_writer.writeheader()
 
@@ -137,13 +138,11 @@ def change_file(file_name, num):
                 el["Фамилия"] = last_name
             obj.append(el)
         f_writer.writerows(obj)
-    
-file_name = 'phone.csv'
 
 
 def main():
     while True:
-        command = input("Введите команду: ")
+        command = input("Добро пожаловать в справочник!\n q - выход\n w - записать\n r - прочитать\n d- удалить\n e - изменить\n n - записать контакт из файла:\n Введите команду: ")
         if command == 'q':
             break
         elif command == 'w':
@@ -151,10 +150,17 @@ def main():
                 create_file(file_name)
             write_file(file_name, get_info())
         elif command == 'r':
-            if not exists(file_name):
-                print("Файл отсутствует. Создайте его")
-                continue
             print(*read_file(file_name))
+        elif command == 'd':
+            del_command = input("Введите телефон, который надо удалить: ")
+            delete_file(file_name, del_command)
+        elif command == 'e':
+            num = input("Введите телефон который надо изменить: ")
+            change_file(file_name, num)
+        elif command == 'n':
+            num = input("Введите телефон, который хотим перенести справочника NEW? ")
+            replace_file(file_name, sourse_file_name, num)
 
-
+sourse_file_name = "new.csv"
+file_name = "phone.csw"
 main()

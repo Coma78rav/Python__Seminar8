@@ -24,7 +24,7 @@ class LenNumberError(Exception):
 
 class NameError(Exception):
     def __init__(self, txt):
-        self.txt = txt
+        n = txt
 def get_info():
     is_valid_first_name = False
     is_valid_last_name = False
@@ -162,5 +162,5 @@ def main():
             replace_file(file_name, sourse_file_name, num)
 
 sourse_file_name = "new.csv"
-file_name = "phone.csw"
+file_name = "phone.csv"
 main()

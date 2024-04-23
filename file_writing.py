@@ -27,18 +27,22 @@ class NameError(Exception):
         self.txt = txt
 def get_info():
     is_valid_first_name = False
-    while not is_valid_first_name:
+    is_valid_last_name = False
+    while not is_valid_first_name or not is_valid_last_name:
         try:
             first_name = input("Введите имя: ")
             if len(first_name) < 2:
-                raise NameError("Не валидное имя")
+                raise NameError("Не верное имя")
+            last_name = input("Введите фамилию: ")
+            if len(last_name) < 2:
+                raise NameError("Не верная фамилия")
+            
             else:
                 is_valid_first_name = True
+                is_valid_last_name = True
         except NameError as err:
             print(err)
             continue
-
-    last_name = "Иванов"
 
     is_valid_phone = False
     while not is_valid_phone:
@@ -49,7 +53,7 @@ def get_info():
             else:
                 is_valid_phone = True
         except ValueError:
-            print("Не валидный номер!!!")
+            print("Не верный номер!!!")
             continue
         except LenNumberError as err:
             print(err)
@@ -59,8 +63,7 @@ def get_info():
 
 
 def create_file(file_name):
-    # with - Менеджер контекста
-    with open(file_name, "w", encoding='utf-8') as data:
+        with open(file_name, "w", encoding='utf-8') as data:
         f_writer = DictWriter(data, fieldnames=['Имя', 'Фамилия', 'Телефон'])
         f_writer.writeheader()
 
@@ -71,11 +74,12 @@ def read_file(file_name):
         return list(f_reader)
 
 
+
 def write_file(file_name, lst):
     res = read_file(file_name)
     for el in res:
         if el["Телефон"] == str(lst[2]):
-            print("Такой телофон уже есть")
+            print("Такой телофон уже существует")
             return
 
     obj = {"Имя": lst[0], "Фамилия": lst[1], "Телефон": lst[2]}
@@ -85,7 +89,27 @@ def write_file(file_name, lst):
         f_writer.writeheader()
         f_writer.writerows(res)
 
-
+def replace_file(file_name, num):
+    res = read_file(file_name)
+    for el in res:
+        if el["Телефон"] == str(num):
+            el = [el["Имя"], el["Фамилия"], el["Телефон"]]
+            write_file(file_name, el)
+    
+    def delete_file(file_name, num):
+        res = read_file(file_name)
+        with open(file_name, "w", encoding="utf-8", newline="") as data:
+            f_writer = DictWriter(data,fieldnames=["Имя", "Фамилия", "Телефон"])
+            f_writer.writeheader()
+            obj = []
+            for el in res:
+                if el["Телефон"] != str(num):
+                    obj.append(el)
+            f_writer.writerows(obj)
+            
+    
+    
+    
 file_name = 'phone.csv'
 
 
